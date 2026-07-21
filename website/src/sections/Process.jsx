@@ -1,4 +1,6 @@
-import Reveal from '../components/Reveal'
+import { motion } from 'framer-motion'
+import { EASE } from '../components/Reveal'
+import { Stagger, StaggerItem } from '../components/Stagger'
 import SectionHeader from '../components/SectionHeader'
 import { process } from '../data/site'
 
@@ -11,20 +13,25 @@ export default function Process() {
           title="A simple, proven process"
           subtitle="Clear steps, no surprises — from first call to launch and beyond."
         />
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 relative">
+        {/* Steps arrive left to right; each connector draws itself after its step. */}
+        <Stagger className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 relative" stagger={0.14}>
           {process.map((p, i) => (
-            <Reveal key={p.step} delay={i * 0.1}>
+            <StaggerItem key={p.step} variant="left">
               <div className="relative h-full">
                 <div className="font-display text-5xl font-bold text-gradient mb-4">{p.step}</div>
                 <h3 className="font-display font-semibold text-xl mb-2">{p.title}</h3>
                 <p className="text-mist text-sm leading-relaxed">{p.text}</p>
                 {i < process.length - 1 && (
-                  <div className="hidden lg:block absolute top-6 -right-3 w-6 h-px bg-gradient-to-r from-violet to-transparent" />
+                  <motion.div
+                    className="hidden lg:block absolute top-6 -right-3 w-6 h-px origin-left bg-gradient-to-r from-violet to-transparent"
+                    variants={{ hidden: { scaleX: 0 }, show: { scaleX: 1 } }}
+                    transition={{ duration: 0.45, delay: 0.25, ease: EASE }}
+                  />
                 )}
               </div>
-            </Reveal>
+            </StaggerItem>
           ))}
-        </div>
+        </Stagger>
       </div>
     </section>
   )

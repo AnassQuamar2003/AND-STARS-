@@ -4,12 +4,6 @@ import { useRef } from 'react'
 import { ArrowUpRight, Play, ChevronDown } from 'lucide-react'
 import { brand } from '../data/site'
 
-// Hero with muted looping video background.
-// Swap the video: drop your file at /public/videos/hero.mp4 (kept below as <source>).
-// Falls back to a free remote clip so it works before you add your own.
-const REMOTE_FALLBACK =
-  'https://cdn.coverr.co/videos/coverr-typing-on-a-laptop-1584/1080p.mp4'
-
 export default function Hero() {
   const ref = useRef(null)
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] })
@@ -18,27 +12,28 @@ export default function Hero() {
 
   return (
     <section ref={ref} className="relative min-h-screen flex items-center overflow-hidden">
-      {/* Video background */}
+      {/* Background — static layers only, so nothing repaints while scrolling. */}
       <div className="absolute inset-0 z-0">
-        <video
-          className="w-full h-full object-cover"
-          autoPlay
-          loop
-          muted
-          playsInline
-          poster=""
-        >
-          <source src="/videos/hero.mp4" type="video/mp4" />
-          <source src={REMOTE_FALLBACK} type="video/mp4" />
-        </video>
-        {/* overlays */}
-        <div className="absolute inset-0 bg-ink/75" />
         <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/40 to-ink/70" />
         <div className="absolute inset-0 grid-bg opacity-40" />
         {/* purple glow blobs */}
         <div className="absolute -top-20 -left-20 w-96 h-96 rounded-full bg-violet/30 blur-[120px]" />
         <div className="absolute bottom-0 right-0 w-[30rem] h-[30rem] rounded-full bg-indigo/20 blur-[140px]" />
       </div>
+
+      {/* Glowing globe — white background keyed out, composited over black and
+          screen-blended so only the violet glow shows over the hero background.
+          Deliberately not scroll-animated: a blended full-screen layer repaints
+          the whole hero on every frame. */}
+      <video
+        className="pointer-events-none absolute inset-0 z-[1] w-full h-full object-contain mix-blend-screen"
+        src="/videos/globe.mp4"
+        poster="/videos/globe-poster.jpg"
+        autoPlay
+        loop
+        muted
+        playsInline
+      />
 
       <motion.div style={{ y, opacity }} className="container-x relative z-10 pt-28 pb-20 text-center">
         <motion.span

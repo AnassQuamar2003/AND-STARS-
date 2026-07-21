@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { ArrowUpRight } from 'lucide-react'
-import Reveal from '../components/Reveal'
+import { Stagger, StaggerItem } from '../components/Stagger'
 import SectionHeader from '../components/SectionHeader'
 import Icon from '../components/Icon'
 import { services } from '../data/site'
@@ -23,9 +23,10 @@ export default function ServicesPreview() {
           subtitle="From a single landing page to full-scale web platforms — designed to convert and built to last."
         />
 
-        <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {services.map((s, i) => (
-            <Reveal key={s.id} delay={i * 0.06}>
+        {/* Cards pop in one by one. */}
+        <Stagger className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          {services.map((s) => (
+            <StaggerItem key={s.id} variant="scale">
               <Link
                 to="/services"
                 className="glass glass-hover rounded-2xl p-7 h-full flex flex-col group"
@@ -39,10 +40,10 @@ export default function ServicesPreview() {
                   Learn more <ArrowUpRight size={15} />
                 </span>
               </Link>
-            </Reveal>
+            </StaggerItem>
           ))}
 
-          <Reveal delay={0.3}>
+          <StaggerItem variant="scale">
             <Link
               to="/contact"
               className="rounded-2xl p-7 h-full flex flex-col justify-between bg-gradient-to-br from-violet-deep to-indigo glow"
@@ -53,8 +54,8 @@ export default function ServicesPreview() {
                 Talk to us <ArrowUpRight size={15} />
               </span>
             </Link>
-          </Reveal>
-        </div>
+          </StaggerItem>
+        </Stagger>
       </div>
     </section>
   )

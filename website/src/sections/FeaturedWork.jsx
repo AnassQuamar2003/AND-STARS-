@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { ArrowUpRight, Check } from 'lucide-react'
 import Reveal from '../components/Reveal'
+import Parallax from '../components/Parallax'
 import SectionHeader from '../components/SectionHeader'
 import DeviceMockup from '../components/DeviceMockup'
 
@@ -39,11 +40,23 @@ export default function FeaturedWork() {
               key={s.title}
               className={`grid lg:grid-cols-2 gap-12 items-center ${i % 2 ? 'lg:[direction:rtl]' : ''}`}
             >
-              <Reveal className="lg:[direction:ltr]">
-                <DeviceMockup src={s.video} fallback={s.fallback} />
+              {/* Rows alternate sides, so the eye zig-zags down the section. */}
+              <Reveal
+                variant={i % 2 ? 'right' : 'left'}
+                duration={0.85}
+                className="lg:[direction:ltr]"
+              >
+                <Parallax distance={26}>
+                  <DeviceMockup src={s.video} fallback={s.fallback} />
+                </Parallax>
               </Reveal>
 
-              <Reveal delay={0.1} className="lg:[direction:ltr]">
+              <Reveal
+                variant={i % 2 ? 'left' : 'right'}
+                delay={0.12}
+                duration={0.85}
+                className="lg:[direction:ltr]"
+              >
                 <span className="eyebrow">{s.category}</span>
                 <h3 className="font-display text-3xl md:text-4xl font-semibold mt-3">{s.title}</h3>
                 <p className="text-mist mt-4 leading-relaxed">{s.desc}</p>

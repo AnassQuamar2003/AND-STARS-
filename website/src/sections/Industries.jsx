@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import Reveal from '../components/Reveal'
+import { Stagger, StaggerItem } from '../components/Stagger'
 import SectionHeader from '../components/SectionHeader'
 import Icon from '../components/Icon'
 import { industries } from '../data/site'
@@ -15,9 +15,13 @@ export default function Industries({ full = false }) {
           subtitle="We speak your customers' language — with sites tailored to how each business wins online."
         />
 
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {list.map((ind, i) => (
-            <Reveal key={ind.name} delay={(i % 4) * 0.06}>
+        {/* Cards tip up from flat, like a hand of cards being laid down. */}
+        <Stagger
+          className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 [perspective:1200px]"
+          stagger={0.07}
+        >
+          {list.map((ind) => (
+            <StaggerItem key={ind.name} variant="flip">
               <Link
                 to="/industries"
                 className="glass glass-hover rounded-2xl p-6 h-full block group"
@@ -28,9 +32,9 @@ export default function Industries({ full = false }) {
                 <h3 className="font-display font-semibold text-lg">{ind.name}</h3>
                 <p className="text-mist text-sm mt-2 leading-relaxed">{ind.hook}</p>
               </Link>
-            </Reveal>
+            </StaggerItem>
           ))}
-        </div>
+        </Stagger>
       </div>
     </section>
   )

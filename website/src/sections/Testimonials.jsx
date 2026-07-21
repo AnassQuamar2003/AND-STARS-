@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Quote, ChevronLeft, ChevronRight, Star } from 'lucide-react'
+import Reveal from '../components/Reveal'
 import SectionHeader from '../components/SectionHeader'
 import { testimonials } from '../data/site'
 
@@ -14,7 +15,8 @@ export default function Testimonials() {
       <div className="container-x">
         <SectionHeader eyebrow="Kind words" title="Clients who reached for the stars" />
 
-        <div className="max-w-3xl mx-auto glass rounded-3xl p-10 md:p-14 relative text-center">
+        <Reveal variant="scale" duration={0.8} className="max-w-3xl mx-auto">
+          <div className="glass rounded-3xl p-10 md:p-14 relative text-center">
           <Quote className="mx-auto text-violet-bright mb-6" size={40} />
           <AnimatePresence mode="wait">
             <motion.div
@@ -53,7 +55,8 @@ export default function Testimonials() {
               <ChevronRight size={18} />
             </button>
           </div>
-        </div>
+          </div>
+        </Reveal>
       </div>
     </section>
   )

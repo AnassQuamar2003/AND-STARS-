@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { useInView } from 'framer-motion'
+import Reveal from '../components/Reveal'
+import { Stagger, StaggerItem } from '../components/Stagger'
 import { stats } from '../data/site'
 
 function Counter({ value, suffix }) {
@@ -33,15 +35,20 @@ export default function Stats() {
   return (
     <section className="py-20">
       <div className="container-x">
-        <div className="glass rounded-3xl p-10 md:p-14 grid grid-cols-2 lg:grid-cols-4 gap-10 text-center relative overflow-hidden">
-          <div className="absolute -top-16 left-1/2 -translate-x-1/2 w-72 h-72 bg-violet/20 blur-[100px] rounded-full" />
-          {stats.map((s) => (
-            <div key={s.label} className="relative">
-              <Counter value={s.value} suffix={s.suffix} />
-              <p className="text-mist text-sm mt-3">{s.label}</p>
-            </div>
-          ))}
-        </div>
+        <Reveal variant="scale" duration={0.8}>
+          <div className="glass rounded-3xl p-10 md:p-14 relative overflow-hidden">
+            <div className="absolute -top-16 left-1/2 -translate-x-1/2 w-72 h-72 bg-violet/20 blur-[100px] rounded-full" />
+            {/* Numbers drop in one at a time, then count up. */}
+            <Stagger className="grid grid-cols-2 lg:grid-cols-4 gap-10 text-center" stagger={0.12}>
+              {stats.map((s) => (
+                <StaggerItem key={s.label} variant="down" className="relative">
+                  <Counter value={s.value} suffix={s.suffix} />
+                  <p className="text-mist text-sm mt-3">{s.label}</p>
+                </StaggerItem>
+              ))}
+            </Stagger>
+          </div>
+        </Reveal>
       </div>
     </section>
   )

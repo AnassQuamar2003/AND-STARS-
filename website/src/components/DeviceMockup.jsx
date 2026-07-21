@@ -1,13 +1,44 @@
+import { useEffect, useRef } from 'react'
+
 // Laptop device frame with a looping video inside.
 // Swap each showcase video: drop files at /public/videos/mockup-1.mp4 etc.
 // Falls back to a free remote clip until you add your own.
+// The clip only downloads and plays while the frame is on screen — autoplaying
+// every mockup at once makes the whole page stutter.
 export default function DeviceMockup({ src, fallback }) {
+  const videoRef = useRef(null)
+
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video) return
+
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          video.play().catch(() => {})
+        } else {
+          video.pause()
+        }
+      },
+      { rootMargin: '200px' }
+    )
+    io.observe(video)
+    return () => io.disconnect()
+  }, [])
+
   return (
     <div className="relative w-full">
       {/* laptop */}
       <div className="relative rounded-t-xl border border-line bg-surface-2 p-2 shadow-2xl">
         <div className="rounded-md overflow-hidden bg-ink aspect-video">
-          <video className="w-full h-full object-cover" autoPlay loop muted playsInline>
+          <video
+            ref={videoRef}
+            className="w-full h-full object-cover"
+            loop
+            muted
+            playsInline
+            preload="none"
+          >
             {src && <source src={src} type="video/mp4" />}
             <source src={fallback} type="video/mp4" />
           </video>

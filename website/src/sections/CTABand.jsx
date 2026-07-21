@@ -7,7 +7,8 @@ export default function CTABand() {
   return (
     <section className="py-24">
       <div className="container-x">
-        <Reveal>
+        {/* Whole band swings in with a slight rotation — the loudest move on the page. */}
+        <Reveal variant="tilt" duration={0.9}>
           <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-violet-deep via-violet to-indigo p-12 md:p-20 text-center glow">
             <div className="absolute inset-0 grid-bg opacity-20" />
             <div className="absolute -top-24 -right-24 w-72 h-72 bg-white/10 blur-3xl rounded-full" />
