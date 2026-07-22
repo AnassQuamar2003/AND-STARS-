@@ -171,3 +171,33 @@
   to { transform: translateX(-50%); }
 }
 .animate-marquee { animation: marquee 28s linear infinite; }
+
+/* Slow drifting aurora blobs. Translate + opacity only — no scale, so the
+   browser never has to re-rasterize the blurred layer, just move it. */
+@keyframes aurora {
+  0%, 100% { transform: translate3d(0, 0, 0); opacity: 0.5; }
+  50% { transform: translate3d(3%, -4%, 0); opacity: 0.8; }
+}
+.animate-aurora { animation: aurora 12s ease-in-out infinite; }
+
+@keyframes aurora-slow {
+  0%, 100% { transform: translate3d(0, 0, 0); opacity: 0.35; }
+  50% { transform: translate3d(-4%, 3%, 0); opacity: 0.6; }
+}
+.animate-aurora-slow { animation: aurora-slow 16s ease-in-out infinite; }
+
+@keyframes spin-slow {
+  to { transform: rotate(360deg); }
+}
+.animate-spin-slow { animation: spin-slow 16s linear infinite; }
+
+/* Falling light beam for the hero's side rails — vh units (not %) so the
+   streak travels the full track regardless of its own size; transform +
+   opacity only, stays on the compositor. */
+@keyframes beam-fall {
+  0% { transform: translateY(-15vh); opacity: 0; }
+  12% { opacity: 1; }
+  85% { opacity: 1; }
+  100% { transform: translateY(115vh); opacity: 0; }
+}
+.animate-beam { animation: beam-fall 4.5s linear infinite; }
