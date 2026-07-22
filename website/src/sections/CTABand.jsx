@@ -16,7 +16,11 @@ export default function CTABand() {
             <div className="relative grid lg:grid-cols-2 lg:gap-12 items-center">
               <div>
                 <span className="eyebrow">Get started</span>
-                <h2 className="font-display text-3xl md:text-5xl font-semibold text-white max-w-2xl mx-auto lg:mx-0 leading-tight mt-4">
+                {/* text-cloud, not text-white: this token is white in dark
+                    mode and near-black in light mode, so the headline and
+                    identity block stay readable in both without touching
+                    the panel, buttons, or anything else. */}
+                <h2 className="font-display text-3xl md:text-5xl font-semibold text-cloud max-w-2xl mx-auto lg:mx-0 leading-tight mt-4">
                   We build digital products <br className="hidden sm:block" />
                   that drive <span className="text-gradient">real growth.</span>
                 </h2>
@@ -27,18 +31,18 @@ export default function CTABand() {
                     of the site rather than living only here. */}
                 <div className="grid sm:grid-cols-3 gap-6 mt-8 text-left max-w-xl mx-auto lg:mx-0">
                   <div>
-                    <h3 className="eyebrow !text-white/60">Mission</h3>
-                    <p className="text-white/80 text-sm mt-2 leading-relaxed">{brand.mission}</p>
+                    <h3 className="eyebrow !text-cloud/60">Mission</h3>
+                    <p className="text-cloud/80 text-sm mt-2 leading-relaxed">{brand.mission}</p>
                   </div>
                   <div>
-                    <h3 className="eyebrow !text-white/60">Vision</h3>
-                    <p className="text-white/80 text-sm mt-2 leading-relaxed">{brand.vision}</p>
+                    <h3 className="eyebrow !text-cloud/60">Vision</h3>
+                    <p className="text-cloud/80 text-sm mt-2 leading-relaxed">{brand.vision}</p>
                   </div>
                   <div>
-                    <h3 className="eyebrow !text-white/60">Values</h3>
+                    <h3 className="eyebrow !text-cloud/60">Values</h3>
                     <ul className="mt-2 space-y-1.5">
                       {brand.values.map((v) => (
-                        <li key={v} className="flex items-center gap-2 text-sm text-white/80">
+                        <li key={v} className="flex items-center gap-2 text-sm text-cloud/80">
                           <Check size={13} className="text-violet-bright shrink-0" />
                           {v}
                         </li>
@@ -48,10 +52,17 @@ export default function CTABand() {
                 </div>
 
                 <div className="flex flex-wrap justify-center lg:justify-start gap-4 mt-9">
-                  <Link to="/contact" className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-white text-ink font-semibold hover:scale-105 transition-transform">
+                  {/* text-black, not text-cloud: this button is deliberately
+                      a fixed white pill regardless of theme, so its text
+                      must stay fixed dark too — `cloud` would flip to white
+                      in dark mode and disappear on the white background. */}
+                  <Link to="/contact" className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-white text-black font-semibold hover:scale-105 transition-transform">
                     Get a Free Quote <ArrowUpRight size={18} />
                   </Link>
-                  <a href={`mailto:${brand.email}`} className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full border border-white/40 text-white font-semibold hover:bg-white/10 transition-colors">
+                  {/* This one isn't fixed-color — it's a transparent outline
+                      sitting directly on the (also transparent) panel, so it
+                      needs to track the theme like the headline did. */}
+                  <a href={`mailto:${brand.email}`} className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full border border-cloud/40 text-cloud font-semibold hover:bg-cloud/10 transition-colors">
                     Email us
                   </a>
                 </div>

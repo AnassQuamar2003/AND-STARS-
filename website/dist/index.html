@@ -13,11 +13,19 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap"
     rel="stylesheet" />
-  <script type="module" crossorigin src="/assets/index-CDHhvDkQ.js"></script>
-  <link rel="stylesheet" crossorigin href="/assets/index-BtV6REEF.css">
+  <script type="module" crossorigin src="/assets/index-D6C1tZor.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-Duvb-U_n.css">
 </head>
 
 <body>
+  <!-- Set the theme before React mounts — otherwise a returning light-mode
+       visitor sees a flash of dark on every reload. -->
+  <script>
+    (function () {
+      var t = localStorage.getItem('and-stars-theme') === 'light' ? 'light' : 'dark'
+      document.documentElement.setAttribute('data-theme', t)
+    })()
+  </script>
   <div id="root"></div>
 </body>
 

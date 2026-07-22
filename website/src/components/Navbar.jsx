@@ -1,9 +1,23 @@
 import { useState, useEffect } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, ArrowUpRight } from 'lucide-react'
+import { Menu, X, ArrowUpRight, Sun, Moon } from 'lucide-react'
 import Logo from './Logo'
 import { navLinks } from '../data/site'
+import { useTheme } from '../context/ThemeContext'
+
+function ThemeToggle({ className = '' }) {
+  const { theme, toggleTheme } = useTheme()
+  return (
+    <button
+      onClick={toggleTheme}
+      aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+      className={`w-10 h-10 grid place-items-center rounded-full border border-line text-mist hover:text-cloud hover:border-violet transition-colors ${className}`}
+    >
+      {theme === 'dark' ? <Sun size={17} /> : <Moon size={17} />}
+    </button>
+  )
+}
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
@@ -56,17 +70,23 @@ export default function Navbar() {
           ))}
         </ul>
 
-        <Link to="/contact" className="hidden md:inline-flex btn-primary text-sm">
-          Get a Quote <ArrowUpRight size={16} />
-        </Link>
+        <div className="hidden md:flex items-center gap-3">
+          <ThemeToggle />
+          <Link to="/contact" className="btn-primary text-sm">
+            Get a Quote <ArrowUpRight size={16} />
+          </Link>
+        </div>
 
-        <button
-          className="md:hidden text-cloud"
-          onClick={() => setOpen((v) => !v)}
-          aria-label="Toggle menu"
-        >
-          {open ? <X /> : <Menu />}
-        </button>
+        <div className="flex items-center gap-2 md:hidden">
+          <ThemeToggle />
+          <button
+            className="text-cloud"
+            onClick={() => setOpen((v) => !v)}
+            aria-label="Toggle menu"
+          >
+            {open ? <X /> : <Menu />}
+          </button>
+        </div>
       </nav>
 
       <AnimatePresence>

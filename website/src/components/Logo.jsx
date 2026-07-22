@@ -14,7 +14,9 @@ export default function Logo({ showText = true, className = '' }) {
         </defs>
         {/* A */}
         <path d="M10 50 L24 16 L30 16 L30 50 L24 50 L24 40 L18 40 L15 50 Z" fill="url(#asGrad)" />
-        <path d="M20 34 L24 24 L24 34 Z" fill="#0a0a0f" />
+        {/* Knocks out part of the "A" to form the letter — tracks the page
+            background token so it still reads correctly in light mode. */}
+        <path d="M20 34 L24 24 L24 34 Z" fill="var(--color-ink)" />
         {/* S curve */}
         <path
           d="M52 22 C46 18 36 18 34 24 C32 30 44 30 46 36 C48 42 40 46 32 42"

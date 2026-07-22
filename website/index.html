@@ -16,6 +16,14 @@
 </head>
 
 <body>
+  <!-- Set the theme before React mounts — otherwise a returning light-mode
+       visitor sees a flash of dark on every reload. -->
+  <script>
+    (function () {
+      var t = localStorage.getItem('and-stars-theme') === 'light' ? 'light' : 'dark'
+      document.documentElement.setAttribute('data-theme', t)
+    })()
+  </script>
   <div id="root"></div>
   <script type="module" src="/src/main.jsx"></script>
 </body>

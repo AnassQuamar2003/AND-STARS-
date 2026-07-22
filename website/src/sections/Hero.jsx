@@ -5,6 +5,7 @@ import { ArrowUpRight, Play, ChevronDown } from 'lucide-react'
 import { brand } from '../data/site'
 import { EASE } from '../components/Reveal'
 import Icon from '../components/Icon'
+import { useTheme } from '../context/ThemeContext'
 
 // Icon chips that float along the hero's side rails — wide screens only, so
 // they sit in the gutter outside the centered copy instead of crowding it.
@@ -136,13 +137,16 @@ function SideRail({ side, icons }) {
 export default function Hero() {
   const ref = useRef(null)
   const globeRef = useRef(null)
+  const { theme } = useTheme()
 
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] })
   const y = useTransform(scrollYProgress, [0, 1], [0, 140])
   const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0])
 
   // A blended full-screen video keeps decoding even once you've scrolled
-  // past it — pause it once the hero leaves the viewport.
+  // past it — pause it once the hero leaves the viewport. Dark-theme only:
+  // light mode swaps the video for a static image (see render below), so
+  // there's nothing to observe there — the `!video` guard covers that.
   useEffect(() => {
     const video = globeRef.current
     if (!video) return
@@ -152,7 +156,7 @@ export default function Hero() {
     )
     io.observe(video)
     return () => io.disconnect()
-  }, [])
+  }, [theme])
 
   return (
     <section ref={ref} className="group relative min-h-screen flex items-center overflow-hidden">
@@ -198,34 +202,45 @@ export default function Hero() {
         </svg>
       </div>
 
-      {/* Glowing globe. The source clip is a circle on a black rectangular
-          canvas — a CSS radial mask fades that rectangle to nothing right
-          at the globe's own edge, so no blend mode is needed to hide it.
-          (mix-blend-screen would do the same job but forces the browser to
-          recompute pixel blending on this full video every decoded frame;
-          a mask is computed once per composite, not per frame.) */}
-      <div className="pointer-events-none absolute inset-0 z-[1] flex items-center justify-center">
-        <div
-          className="w-[92vw] max-w-[1400px] aspect-[1280/852] scale-100"
-          style={{
-            WebkitMaskImage:
-              'radial-gradient(ellipse 39% 58% at 49% 49%, #000 0%, #000 68%, transparent 100%)',
-            maskImage:
-              'radial-gradient(ellipse 39% 58% at 49% 49%, #000 0%, #000 68%, transparent 100%)',
-          }}
-        >
-          <video
-            ref={globeRef}
-            className="w-full h-full object-cover"
-            src="/videos/globe.mp4"
-            poster="/videos/globe-poster.jpg"
-            autoPlay
-            loop
-            muted
-            playsInline
-          />
+      {/* Hero visual — theme-dependent, not just recolored. The globe clip
+          was rendered on a black canvas: fine to fade into a dark hero with
+          a mask, but there's no clean way to make a black-canvas video work
+          on a light background without redoing the asset. Light mode uses
+          the glass-cube illustration instead (same one in the CTA band) —
+          it has real alpha, so it drops onto any background for free, and
+          it's the light-mode skill's own documented hero motif: "same
+          premium 3D tech role, different motif" than the globe. */}
+      {theme === 'light' ? (
+        <div className="pointer-events-none absolute inset-0 z-[1] flex items-center justify-center">
+          <div className="relative w-[70vw] max-w-[620px] aspect-square animate-float" style={{ animationDuration: '8s' }}>
+            <div className="absolute inset-0 bg-violet/20 blur-[100px] rounded-full" />
+            <img src="/images/cta-cubes.webp" alt="" className="relative w-full h-full object-contain" />
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className="pointer-events-none absolute inset-0 z-[1] flex items-center justify-center">
+          <div
+            className="w-[92vw] max-w-[1400px] aspect-[1280/852] scale-100"
+            style={{
+              WebkitMaskImage:
+                'radial-gradient(ellipse 39% 58% at 49% 49%, #000 0%, #000 68%, transparent 100%)',
+              maskImage:
+                'radial-gradient(ellipse 39% 58% at 49% 49%, #000 0%, #000 68%, transparent 100%)',
+            }}
+          >
+            <video
+              ref={globeRef}
+              className="w-full h-full object-cover"
+              src="/videos/globe.mp4"
+              poster="/videos/globe-poster.jpg"
+              autoPlay
+              loop
+              muted
+              playsInline
+            />
+          </div>
+        </div>
+      )}
 
       <SideRail side="left" icons={SIDE_ICONS_LEFT} />
       <SideRail side="right" icons={SIDE_ICONS_RIGHT} />

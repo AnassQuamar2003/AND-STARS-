@@ -4,6 +4,11 @@
   --font-display: "Sora", ui-sans-serif, system-ui, sans-serif;
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
 
+  /* Values below are the dark theme (default). Tailwind v4 keeps these as
+     real runtime CSS custom properties, so `[data-theme="light"]` further
+     down can override them and every utility built on them (bg-ink,
+     text-mist, from-violet, …) repaints automatically — no per-component
+     dark:/light: variants needed. */
   --color-ink: #0a0a0f;
   --color-surface: #12121c;
   --color-surface-2: #1a1a28;
@@ -16,6 +21,25 @@
 
   --color-cloud: #f8f8fc;
   --color-mist: #b4b4c6;
+}
+
+/* Light mode — palette from the light-mode skill (.claude/skills/light-mode).
+   Font stays Sora/Inter rather than switching to the skill's Poppins: that
+   was left as an open decision for the owner, defaulting to brand
+   consistency across themes per the skill's own fallback instruction. */
+:root[data-theme="light"] {
+  --color-ink: #f8fafc;
+  --color-surface: #ffffff;
+  --color-surface-2: #eef1f8;
+  --color-line: #e2e4ef;
+
+  --color-violet: #635bff;
+  --color-violet-bright: #7e40ff;
+  --color-violet-deep: #4c46d9;
+  --color-indigo: #00d4ff;
+
+  --color-cloud: #0f172a;
+  --color-mist: #64748b;
 }
 
 @layer base {
@@ -67,7 +91,12 @@
 
   /* Gradient text */
   .text-gradient {
-    background: linear-gradient(120deg, #a78bfa 0%, #8b5cf6 45%, #6366f1 100%);
+    background: linear-gradient(
+      120deg,
+      var(--color-violet-bright) 0%,
+      var(--color-violet) 45%,
+      var(--color-indigo) 100%
+    );
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -83,7 +112,9 @@
     color: var(--color-violet-bright);
   }
 
-  /* Glass card */
+  /* Glass card — the white-tint recipe only reads as "glass" against a dark
+     backdrop; light mode gets its own recipe below, shadow doing the
+     separation work instead of a light border, per the light-mode skill. */
   .glass {
     background: linear-gradient(
       160deg,
@@ -113,7 +144,7 @@
     border-radius: 999px;
     font-weight: 600;
     color: white;
-    background: linear-gradient(120deg, #8b5cf6, #6366f1);
+    background: linear-gradient(120deg, var(--color-violet), var(--color-indigo));
     box-shadow: 0 10px 30px -10px rgba(139, 92, 246, 0.7);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
@@ -136,6 +167,24 @@
   .btn-ghost:hover {
     border-color: var(--color-violet-bright);
     background: rgba(139, 92, 246, 0.1);
+  }
+}
+
+:root[data-theme="light"] {
+  .glass {
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(15, 23, 42, 0.06);
+    box-shadow: 0 8px 30px -14px rgba(15, 23, 42, 0.25);
+  }
+  .glass-hover:hover {
+    border-color: rgba(99, 91, 255, 0.35);
+    box-shadow: 0 20px 40px -20px rgba(99, 91, 255, 0.35);
+  }
+  .btn-ghost {
+    border-color: rgba(15, 23, 42, 0.14);
+  }
+  .btn-ghost:hover {
+    background: rgba(99, 91, 255, 0.08);
   }
 }
 
