@@ -117,8 +117,11 @@ function SideRail({ side, icons }) {
             className="absolute -translate-x-1/2 -translate-y-1/2"
             style={{ top: ic.top, left: '50%' }}
           >
+            {/* Solid tint, not `.glass` — a moving backdrop-blur chip forces a
+                re-blur of whatever's behind it every frame; not worth the
+                cost for a small decorative icon. */}
             <div
-              className="glass rounded-2xl p-3 animate-float"
+              className="rounded-2xl p-3 bg-surface-2/90 border border-line animate-float"
               style={{ animationDuration: `${ic.duration}s`, animationDelay: ic.delay }}
             >
               <Icon name={ic.name} size={20} className="text-violet-bright" />
@@ -195,20 +198,34 @@ export default function Hero() {
         </svg>
       </div>
 
-      {/* Glowing globe — white background keyed out, composited over black and
-          screen-blended so only the violet glow shows over the hero background.
-          Deliberately not scroll-animated: a blended full-screen layer repaints
-          the whole hero on every frame. */}
-      <video
-        ref={globeRef}
-        className="pointer-events-none absolute inset-0 z-[1] w-full h-full object-contain mix-blend-screen scale-110"
-        src="/videos/globe.mp4"
-        poster="/videos/globe-poster.jpg"
-        autoPlay
-        loop
-        muted
-        playsInline
-      />
+      {/* Glowing globe. The source clip is a circle on a black rectangular
+          canvas — a CSS radial mask fades that rectangle to nothing right
+          at the globe's own edge, so no blend mode is needed to hide it.
+          (mix-blend-screen would do the same job but forces the browser to
+          recompute pixel blending on this full video every decoded frame;
+          a mask is computed once per composite, not per frame.) */}
+      <div className="pointer-events-none absolute inset-0 z-[1] flex items-center justify-center">
+        <div
+          className="w-[92vw] max-w-[1400px] aspect-[1280/852] scale-110"
+          style={{
+            WebkitMaskImage:
+              'radial-gradient(ellipse 39% 58% at 49% 49%, #000 0%, #000 68%, transparent 100%)',
+            maskImage:
+              'radial-gradient(ellipse 39% 58% at 49% 49%, #000 0%, #000 68%, transparent 100%)',
+          }}
+        >
+          <video
+            ref={globeRef}
+            className="w-full h-full object-cover"
+            src="/videos/globe.mp4"
+            poster="/videos/globe-poster.jpg"
+            autoPlay
+            loop
+            muted
+            playsInline
+          />
+        </div>
+      </div>
 
       <SideRail side="left" icons={SIDE_ICONS_LEFT} />
       <SideRail side="right" icons={SIDE_ICONS_RIGHT} />

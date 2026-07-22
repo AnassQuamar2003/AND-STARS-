@@ -201,3 +201,11 @@
   100% { transform: translateY(115vh); opacity: 0; }
 }
 .animate-beam { animation: beam-fall 4.5s linear infinite; }
+
+/* Slow breathing glow behind the CTA illustration. Opacity only — the blur
+   itself is static, so the browser rasterizes it once and just fades it. */
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 0.7; }
+}
+.animate-pulse-glow { animation: pulse-glow 5s ease-in-out infinite; }
