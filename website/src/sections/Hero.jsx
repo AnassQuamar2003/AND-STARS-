@@ -206,7 +206,7 @@ export default function Hero() {
           a mask is computed once per composite, not per frame.) */}
       <div className="pointer-events-none absolute inset-0 z-[1] flex items-center justify-center">
         <div
-          className="w-[92vw] max-w-[1400px] aspect-[1280/852] scale-110"
+          className="w-[92vw] max-w-[1400px] aspect-[1280/852] scale-100"
           style={{
             WebkitMaskImage:
               'radial-gradient(ellipse 39% 58% at 49% 49%, #000 0%, #000 68%, transparent 100%)',

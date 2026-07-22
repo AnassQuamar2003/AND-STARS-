@@ -4,6 +4,8 @@ export const brand = {
   name: 'AND STARS',
   tagline: 'Young Minds. Bright Future.',
   mission: 'We build fast, modern, revenue-driving websites and web apps for growing businesses.',
+  vision: 'To become the trusted digital partner for ambitious businesses ready to grow.',
+  values: ['Craftsmanship', 'Speed', 'Transparency', 'Growth'],
   email: 'hello@andstars.dev',
 }
 

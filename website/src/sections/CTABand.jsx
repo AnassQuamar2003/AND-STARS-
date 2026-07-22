@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { ArrowUpRight } from 'lucide-react'
+import { ArrowUpRight, Check } from 'lucide-react'
 import Reveal from '../components/Reveal'
 import { brand } from '../data/site'
 
@@ -15,12 +15,38 @@ export default function CTABand() {
 
             <div className="relative grid lg:grid-cols-2 lg:gap-12 items-center">
               <div>
-                <h2 className="font-display text-3xl md:text-5xl font-semibold text-white max-w-2xl mx-auto lg:mx-0 leading-tight">
-                  Ready to launch something great?
+                <span className="eyebrow">Get started</span>
+                <h2 className="font-display text-3xl md:text-5xl font-semibold text-white max-w-2xl mx-auto lg:mx-0 leading-tight mt-4">
+                  We build digital products <br className="hidden sm:block" />
+                  that drive <span className="text-gradient">real growth.</span>
                 </h2>
-                <p className="text-white/80 mt-5 max-w-xl mx-auto lg:mx-0">
-                  Tell us about your project. We'll get back to you within 24 hours with next steps.
-                </p>
+
+                {/* Mission / Vision / Values — same three-part identity block
+                    as the brand moodboard, copy pulled from `brand` in
+                    site.js so it stays one source of truth with the rest
+                    of the site rather than living only here. */}
+                <div className="grid sm:grid-cols-3 gap-6 mt-8 text-left max-w-xl mx-auto lg:mx-0">
+                  <div>
+                    <h3 className="eyebrow !text-white/60">Mission</h3>
+                    <p className="text-white/80 text-sm mt-2 leading-relaxed">{brand.mission}</p>
+                  </div>
+                  <div>
+                    <h3 className="eyebrow !text-white/60">Vision</h3>
+                    <p className="text-white/80 text-sm mt-2 leading-relaxed">{brand.vision}</p>
+                  </div>
+                  <div>
+                    <h3 className="eyebrow !text-white/60">Values</h3>
+                    <ul className="mt-2 space-y-1.5">
+                      {brand.values.map((v) => (
+                        <li key={v} className="flex items-center gap-2 text-sm text-white/80">
+                          <Check size={13} className="text-violet-bright shrink-0" />
+                          {v}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+
                 <div className="flex flex-wrap justify-center lg:justify-start gap-4 mt-9">
                   <Link to="/contact" className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-white text-ink font-semibold hover:scale-105 transition-transform">
                     Get a Free Quote <ArrowUpRight size={18} />
